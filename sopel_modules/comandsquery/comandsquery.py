@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 from sopel import module
 
+import os
 from difflib import SequenceMatcher
 
 
