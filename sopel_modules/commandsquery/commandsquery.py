@@ -166,7 +166,7 @@ def query_detection(bot, trigger):
             similarlevel = SequenceMatcher(None, querycommand.lower(), com.lower()).ratio()
             sim_com.append(com)
             sim_num.append(similarlevel)
-        sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
+        sim_num, sim_com = (list(x) for x in zip(*sorted(zip(sim_num, sim_com), key=itemgetter(0))))
         closestmatch = spicemanip(bot, sim_com, 'reverse', "list")
         listnumb, relist = 1, []
         for item in closestmatch:
@@ -521,8 +521,3 @@ def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutput
     if inputs == []:
         return ''
     return spicemanip_rangebetween(bot, inputs, outputtask, 1, int(mainoutputtask) - 1)
-
-
-def array_arrangesort(bot, sortbyarray, arrayb):
-    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
-    return sortbyarray, arrayb
