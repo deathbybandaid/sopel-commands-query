@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals, absolute_import, division, print_function
 
-from sopel import module
+from sopel import module, rule
 
 from difflib import SequenceMatcher
 
