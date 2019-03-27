@@ -1,1 +1,3 @@
-# sopel-commands-query
+# Sopel Commands Query
+
+Sopel Commands Query responds to ? to display commands matching patterns
