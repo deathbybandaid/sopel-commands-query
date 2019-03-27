@@ -127,6 +127,7 @@ def setup(bot):
 
 @module.rule('^\?(.*)')
 def query_detection(bot, trigger):
+    bot.say("running")
 
     commands_list = dict()
     for commandstype in ['module_commands', 'nickname_commands']:
