@@ -128,6 +128,10 @@ def setup(bot):
 @module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
+    # command must start with
+    if not str(trigger).startswith(tuple(['?'])):
+        return
+
     commands_list = dict()
     for commandstype in ['module_commands', 'nickname_commands']:
         for com in bot.memory['commandslist'][commandstype].keys():
