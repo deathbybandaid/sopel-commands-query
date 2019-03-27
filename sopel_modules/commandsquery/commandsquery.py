@@ -127,7 +127,6 @@ def setup(bot):
 
 @module.rule('^\?(.*)')
 def query_detection(bot, trigger):
-    bot.say("running")
 
     commands_list = dict()
     for commandstype in ['module_commands', 'nickname_commands']:
@@ -145,22 +144,22 @@ def query_detection(bot, trigger):
             if command.lower().startswith(querycommand):
                 commandlist.append(command)
         if commandlist == []:
-            bot.say("No commands match " + str(querycommand) + ".")
+            bot.reply("No commands match " + str(querycommand) + ".")
             return
         else:
-            bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
+            bot.reply("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
             return
 
     elif querycommand.endswith(tuple(["+"])):
         querycommand = querycommand[:-1]
         if querycommand not in commands_list.keys():
-            bot.say("The " + str(querycommand) + " does not appear to be valid.")
+            bot.reply("The " + str(querycommand) + " does not appear to be valid.")
             return
         realcom = querycommand
         if "aliasfor" in commands_list[querycommand].keys():
             realcom = commands_list[querycommand]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
+        bot.reply("The following commands match " + str(querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
         return
 
     elif querycommand.endswith(tuple(['?'])):
@@ -177,11 +176,11 @@ def query_detection(bot, trigger):
             if listnumb <= 10:
                 relist.append(str(item))
             listnumb += 1
-        bot.say("The following commands may match " + str(querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
+        bot.reply("The following commands may match " + str(querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
         return
 
     elif querycommand in commands_list.keys():
-        bot.say("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".")
+        bot.reply("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".")
         return
 
     elif not querycommand:
@@ -193,10 +192,10 @@ def query_detection(bot, trigger):
             if command.lower().startswith(querycommand):
                 commandlist.append(command)
         if commandlist == []:
-            bot.say("No commands match " + str(querycommand) + ".b")
+            bot.reply("No commands match " + str(querycommand) + ".")
             return
         else:
-            bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
+            bot.reply("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
             return
 
 
