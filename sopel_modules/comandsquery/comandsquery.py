@@ -24,6 +24,8 @@ def query_detection(bot, trigger):
             if com not in commands_list.keys():
                 commands_list[com] = bot.memory['commandslist'][commandstype][com]
 
+    triggerargsarray = spicemanip(bot, trigger, 'create')
+
     # command issued, check if valid
     querycommand = spicemanip(bot, triggerargsarray, 1).lower()[1:]
     if len(querycommand) == 1:
