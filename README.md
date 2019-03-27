@@ -13,7 +13,24 @@ pip3 install .
 ````
 
 # Usage
+
+## Find commands that start with a letter, or multiple letters
+
 ````
 <usernick> ?t
 <Sopel> The following commands match t: temp, title, t, time, tld, and tell.
+````
+
+## Find Command Aliases
+
+````
+<usernick>  ?time+
+<Sopel>  The following commands match time: t and time.
+````
+
+## Find Possible matches based on similarity
+
+````
+<deathbybandaid>  ?time?
+<Sopel>  The following commands may match time: time, uptime, title, tell, temp, define, t, wt, ip, and in.
 ````
