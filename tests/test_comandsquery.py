@@ -4,9 +4,9 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import unittest
 
-from sopel_modules.comandsquery import comandsquery
+from sopel_modules.commandsquery import commandsquery
 
-class TestComandsquery(unittest.TestCase):
+class TestCommandsquery(unittest.TestCase):
     def setUp(self):
         pass
 

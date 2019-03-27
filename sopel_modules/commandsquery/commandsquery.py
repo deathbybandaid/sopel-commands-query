@@ -161,7 +161,7 @@ def query_detection(bot, trigger):
         querycommand = querycommand[:-1]
         sim_com, sim_num = [], []
         for com in commands_list.keys():
-            similarlevel = similar(querycommand.lower(), com.lower())
+            similarlevel = SequenceMatcher(None, querycommand.lower(), com.lower()).ratio()
             sim_com.append(com)
             sim_num.append(similarlevel)
         sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
@@ -188,10 +188,6 @@ def query_detection(bot, trigger):
             return bot.say("No commands match " + str(querycommand) + ".", trigger.nick)
         else:
             return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".", trigger.nick)
-
-
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
 
 
 """

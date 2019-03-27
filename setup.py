@@ -26,7 +26,7 @@ with open('dev-requirements.txt') as dev_requirements_file:
 
 
 setup(
-    name='sopel_modules.comandsquery',
+    name='sopel_modules.commandsquery',
     version='0.1.0',
     description='Sopel Commands Query responds to ? to display commands matching patterns',
     long_description=readme + '\n\n' + history,
