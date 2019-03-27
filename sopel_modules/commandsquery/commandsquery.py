@@ -144,7 +144,7 @@ def query_detection(bot, trigger):
             if command.lower().startswith(querycommand):
                 commandlist.append(command)
         if commandlist == []:
-            bot.say("No commands match " + str(querycommand) + ".", trigger.nick)
+            bot.say("No commands match " + str(querycommand) + ".")
             return
         else:
             bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
