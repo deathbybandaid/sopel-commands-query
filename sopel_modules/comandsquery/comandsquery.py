@@ -12,93 +12,38 @@ def configure(config):
 
 
 def setup(bot):
-    pass
-
-
-@module.rule('^\?(.*)')
-def query_detection(bot, trigger):
-
-    commands_list = dict()
-    for commandstype in ['module_commands', 'nickname_commands']:
-        for com in bot.memory['commandslist'][commandstype].keys():
-            if com not in commands_list.keys():
-                commands_list[com] = bot.memory['commandslist'][commandstype][com]
-
-    triggerargsarray = spicemanip(bot, trigger, 'create')
-
-    # command issued, check if valid
-    querycommand = spicemanip(bot, triggerargsarray, 1).lower()[1:]
-    if len(querycommand) == 1:
-        commandlist = []
-        for command in commands_list.keys():
-            if command.lower().startswith(querycommand):
-                commandlist.append(command)
-        if commandlist == []:
-            return bot.say("No commands match " + str(querycommand) + ".", trigger.nick)
-        else:
-            return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".", trigger.nick)
-
-    elif querycommand.endswith(tuple(["+"])):
-        querycommand = querycommand[:-1]
-        if querycommand not in commands_list.keys():
-            return bot.say("The " + str(querycommand) + " does not appear to be valid.")
-        realcom = querycommand
-        if "aliasfor" in commands_list[querycommand].keys():
-            realcom = commands_list[querycommand]["aliasfor"]
-        validcomlist = commands_list[realcom]["validcoms"]
-        return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".", trigger.nick)
-
-    elif querycommand.endswith(tuple(['?'])):
-        querycommand = querycommand[:-1]
-        sim_com, sim_num = [], []
-        for com in commands_list.keys():
-            similarlevel = similar(querycommand.lower(), com.lower())
-            sim_com.append(com)
-            sim_num.append(similarlevel)
-        sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
-        closestmatch = spicemanip(bot, sim_com, 'reverse', "list")
-        listnumb, relist = 1, []
-        for item in closestmatch:
-            if listnumb <= 10:
-                relist.append(str(item))
-            listnumb += 1
-        return bot.say("The following commands may match " + str(querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".", trigger.nick)
-
-    elif querycommand in commands_list.keys():
-        return bot.say("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".", trigger.nick)
-
-    elif not querycommand:
-        return
-
-    else:
-        commandlist = []
-        for command in commands_list.keys():
-            if command.lower().startswith(querycommand):
-                commandlist.append(command)
-        if commandlist == []:
-            return bot.say("No commands match " + str(querycommand) + ".", trigger.nick)
-        else:
-            return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".", trigger.nick)
-
-
-@module.event('001')
-@module.rule('.*')
-def bot_startup_read_modules(bot, trigger):
 
     bot.memory['commandslist'] = dict()
-
     for comtype in ['module', 'nickname', 'rule']:
         comtypedict = str(comtype + "_commands")
         bot.memory['commandslist'][comtypedict] = dict()
 
-    filenameslist = []
-    for modules in bot.command_groups.items():
-        filename = modules[0]
-        if filename not in ["coretasks"]:
-            filenameslist.append(filename + ".py")
+    filepathlisting = []
 
+    # main Modules directory
+    main_dir = os.path.dirname(os.path.abspath(sopel.__file__))
+    modules_dir = os.path.join(main_dir, 'modules')
+    filepathlisting.append(modules_dir)
+
+    # Home Directory
+    home_modules_dir = os.path.join(bot.config.homedir, 'modules')
+    if os.path.isdir(home_modules_dir):
+        filepathlisting.append(home_modules_dir)
+
+    # pypi installed
+    try:
+        pypi_modules = os.path.dirname(os.path.abspath(sopel_modules.__file__))
+        pypi_modules_dir = os.path.join(pypi_modules, 'modules')
+        filepathlisting.append(pypi_modules_dir)
+    except Exception:
+        pass
+
+    # Extra directories
     filepathlist = []
     for directory in bot.config.core.extra:
+        filepathlisting.append(directory)
+
+    for directory in filepathlisting:
         for pathname in os.listdir(directory):
             path = os.path.join(directory, pathname)
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
@@ -175,6 +120,72 @@ def bot_startup_read_modules(bot, trigger):
             for comalias in comaliases:
                 if comalias not in bot.memory['commandslist'][comtypedict].keys():
                     bot.memory['commandslist'][comtypedict][comalias] = {"aliasfor": maincom}
+
+
+@module.rule('^\?(.*)')
+def query_detection(bot, trigger):
+
+    commands_list = dict()
+    for commandstype in ['module_commands', 'nickname_commands']:
+        for com in bot.memory['commandslist'][commandstype].keys():
+            if com not in commands_list.keys():
+                commands_list[com] = bot.memory['commandslist'][commandstype][com]
+
+    triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    # command issued, check if valid
+    querycommand = spicemanip(bot, triggerargsarray, 1).lower()[1:]
+    if len(querycommand) == 1:
+        commandlist = []
+        for command in commands_list.keys():
+            if command.lower().startswith(querycommand):
+                commandlist.append(command)
+        if commandlist == []:
+            return bot.say("No commands match " + str(querycommand) + ".", trigger.nick)
+        else:
+            return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".", trigger.nick)
+
+    elif querycommand.endswith(tuple(["+"])):
+        querycommand = querycommand[:-1]
+        if querycommand not in commands_list.keys():
+            return bot.say("The " + str(querycommand) + " does not appear to be valid.")
+        realcom = querycommand
+        if "aliasfor" in commands_list[querycommand].keys():
+            realcom = commands_list[querycommand]["aliasfor"]
+        validcomlist = commands_list[realcom]["validcoms"]
+        return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".", trigger.nick)
+
+    elif querycommand.endswith(tuple(['?'])):
+        querycommand = querycommand[:-1]
+        sim_com, sim_num = [], []
+        for com in commands_list.keys():
+            similarlevel = similar(querycommand.lower(), com.lower())
+            sim_com.append(com)
+            sim_num.append(similarlevel)
+        sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
+        closestmatch = spicemanip(bot, sim_com, 'reverse', "list")
+        listnumb, relist = 1, []
+        for item in closestmatch:
+            if listnumb <= 10:
+                relist.append(str(item))
+            listnumb += 1
+        return bot.say("The following commands may match " + str(querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".", trigger.nick)
+
+    elif querycommand in commands_list.keys():
+        return bot.say("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".", trigger.nick)
+
+    elif not querycommand:
+        return
+
+    else:
+        commandlist = []
+        for command in commands_list.keys():
+            if command.lower().startswith(querycommand):
+                commandlist.append(command)
+        if commandlist == []:
+            return bot.say("No commands match " + str(querycommand) + ".", trigger.nick)
+        else:
+            return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".", trigger.nick)
 
 
 def similar(a, b):
