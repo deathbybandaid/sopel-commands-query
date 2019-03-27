@@ -144,23 +144,19 @@ def query_detection(bot, trigger):
             if command.lower().startswith(querycommand):
                 commandlist.append(command)
         if commandlist == []:
-            bot.reply("No commands match " + str(querycommand) + ".")
-            return
+            return bot.say("No commands match " + str(querycommand) + ".", trigger.nick)
         else:
-            bot.reply("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
-            return
+            return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".", trigger.nick)
 
     elif querycommand.endswith(tuple(["+"])):
         querycommand = querycommand[:-1]
         if querycommand not in commands_list.keys():
-            bot.reply("The " + str(querycommand) + " does not appear to be valid.")
-            return
+            return bot.say("The " + str(querycommand) + " does not appear to be valid.")
         realcom = querycommand
         if "aliasfor" in commands_list[querycommand].keys():
             realcom = commands_list[querycommand]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        bot.reply("The following commands match " + str(querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
-        return
+        return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".", trigger.nick)
 
     elif querycommand.endswith(tuple(['?'])):
         querycommand = querycommand[:-1]
@@ -176,12 +172,10 @@ def query_detection(bot, trigger):
             if listnumb <= 10:
                 relist.append(str(item))
             listnumb += 1
-        bot.reply("The following commands may match " + str(querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
-        return
+        return bot.say("The following commands may match " + str(querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".", trigger.nick)
 
     elif querycommand in commands_list.keys():
-        bot.reply("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".")
-        return
+        return bot.say("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".", trigger.nick)
 
     elif not querycommand:
         return
@@ -192,11 +186,9 @@ def query_detection(bot, trigger):
             if command.lower().startswith(querycommand):
                 commandlist.append(command)
         if commandlist == []:
-            bot.reply("No commands match " + str(querycommand) + ".")
-            return
+            return bot.say("No commands match " + str(querycommand) + ".", trigger.nick)
         else:
-            bot.reply("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
-            return
+            return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".", trigger.nick)
 
 
 """
