@@ -34,6 +34,7 @@ def setup(bot):
 
     # pypi installed
     try:
+        import sopel_modules
         pypi_modules = os.path.dirname(os.path.abspath(sopel_modules.__file__))
         pypi_modules_dir = os.path.join(pypi_modules, 'modules')
         filepathlisting.append(pypi_modules_dir)
