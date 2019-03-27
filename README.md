@@ -13,3 +13,7 @@ pip3 install .
 ````
 
 # Usage
+````
+<usernick> ?t
+<Sopel> The following commands match t: temp, title, t, time, tld, and tell.
+````
