@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals, absolute_import, division, print_function
 
-from sopel import module, rule
+from sopel import module
 
 from difflib import SequenceMatcher
 
@@ -15,7 +15,7 @@ def setup(bot):
     pass
 
 
-@rule('^\?(.*)')
+@module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
     commands_list = dict()
@@ -80,7 +80,7 @@ def query_detection(bot, trigger):
 
 
 @event('001')
-@rule('.*')
+@module.rule('.*')
 def bot_startup_read_modules(bot, trigger):
 
     bot.memory['commandslist'] = dict()
