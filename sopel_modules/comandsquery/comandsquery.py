@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals, absolute_import, division, print_function
 
+import sopel
 from sopel import module
 
 import os
