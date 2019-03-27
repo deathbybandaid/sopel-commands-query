@@ -79,7 +79,7 @@ def query_detection(bot, trigger):
             return bot.say("The following commands match " + str(querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".", trigger.nick)
 
 
-@event('001')
+@module.event('001')
 @module.rule('.*')
 def bot_startup_read_modules(bot, trigger):
 
