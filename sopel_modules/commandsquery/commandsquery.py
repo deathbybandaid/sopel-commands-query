@@ -7,6 +7,7 @@ from sopel import module
 
 import os
 from difflib import SequenceMatcher
+from operator import itemgetter
 
 
 def configure(config):
