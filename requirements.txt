@@ -1,1 +1,2 @@
 sopel>=6.0,<7
+spicemanip>=0.1.0
