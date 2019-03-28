@@ -118,7 +118,7 @@ def setup(bot):
 
             maincom = dict_from_file["validcoms"][0]
             if len(dict_from_file["validcoms"]) > 1:
-                comaliases = spicemanip.main(bot, dict_from_file["validcoms"], '2+', 'list')
+                comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
             else:
                 comaliases = []
 
@@ -137,10 +137,10 @@ def query_detection(bot, trigger):
             if com not in commands_list.keys():
                 commands_list[com] = bot.memory['commandslist'][commandstype][com]
 
-    triggerargsarray = spicemanip.main(bot, trigger, 'create')
+    triggerargsarray = spicemanip.main(trigger, 'create')
 
     # command issued, check if valid
-    querycommand = spicemanip.main(bot, triggerargsarray, 1).lower()[1:]
+    querycommand = spicemanip.main(triggerargsarray, 1).lower()[1:]
     if len(querycommand) == 1:
         commandlist = []
         for command in commands_list.keys():
@@ -149,7 +149,7 @@ def query_detection(bot, trigger):
         if commandlist == []:
             return bot.notice("No commands match " + str(querycommand) + ".", trigger.nick)
         else:
-            return bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(bot, commandlist, 'andlist') + ".", trigger.nick)
+            return bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
 
     elif querycommand.endswith(tuple(["+"])):
         querycommand = querycommand[:-1]
@@ -159,7 +159,7 @@ def query_detection(bot, trigger):
         if "aliasfor" in commands_list[querycommand].keys():
             realcom = commands_list[querycommand]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        return bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(bot, validcomlist, 'andlist') + ".", trigger.nick)
+        return bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
 
     elif querycommand.endswith(tuple(['?'])):
         querycommand = querycommand[:-1]
@@ -169,13 +169,13 @@ def query_detection(bot, trigger):
             sim_com.append(com)
             sim_num.append(similarlevel)
         sim_num, sim_com = (list(x) for x in zip(*sorted(zip(sim_num, sim_com), key=itemgetter(0))))
-        closestmatch = spicemanip.main(bot, sim_com, 'reverse', "list")
+        closestmatch = spicemanip.main(sim_com, 'reverse', "list")
         listnumb, relist = 1, []
         for item in closestmatch:
             if listnumb <= 10:
                 relist.append(str(item))
             listnumb += 1
-        return bot.notice("The following commands may match " + str(querycommand) + ": " + spicemanip.main(bot, relist, 'andlist') + ".", trigger.nick)
+        return bot.notice("The following commands may match " + str(querycommand) + ": " + spicemanip.main(relist, 'andlist') + ".", trigger.nick)
 
     elif querycommand in commands_list.keys():
         return bot.notice("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".", trigger.nick)
@@ -191,4 +191,4 @@ def query_detection(bot, trigger):
         if commandlist == []:
             return bot.notice("No commands match " + str(querycommand) + ".", trigger.nick)
         else:
-            return bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(bot, commandlist, 'andlist') + ".", trigger.nick)
+            return bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
