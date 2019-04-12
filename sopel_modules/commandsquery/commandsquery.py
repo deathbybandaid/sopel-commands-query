@@ -123,7 +123,7 @@ def setup(bot):
 
             comtypedict = str(comtype + "_commands")
 
-            bot.memory['Sopel-CommandsQuery'][comtype + "_commands_count"] += 1
+            bot.memory['Sopel-CommandsQuery'][comtypedict + "_count"] += 1
 
             # default command to filename
             if "validcoms" not in dict_from_file.keys():
