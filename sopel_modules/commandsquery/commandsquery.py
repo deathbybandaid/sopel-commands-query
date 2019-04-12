@@ -141,7 +141,7 @@ def setup(bot):
                     bot.memory['Sopel-CommandsQuery'][comtypedict][comalias] = {"aliasfor": maincom}
 
     for comtype in ['module_commands', 'nickname_commands', 'rule_commands']:
-        stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['Sopel-CommandsQuery'][commandstype].keys())) + " " + commandstype + " commands.")
+        stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['Sopel-CommandsQuery'][comtype].keys())) + " " + comtype + " commands.")
 
 
 @sopel.module.event('001')
