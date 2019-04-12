@@ -157,9 +157,10 @@ def query_detection(bot, trigger):
 
     commands_list = dict()
     for commandstype in bot.memory['Sopel-CommandsQuery'].keys():
-        for com in bot.memory['Sopel-CommandsQuery'][commandstype].keys():
-            if com not in commands_list.keys():
-                commands_list[com] = bot.memory['Sopel-CommandsQuery'][commandstype][com]
+        if not commandstype.endswith("_count"):
+            for com in bot.memory['Sopel-CommandsQuery'][commandstype].keys():
+                if com not in commands_list.keys():
+                    commands_list[com] = bot.memory['Sopel-CommandsQuery'][commandstype][com]
 
     triggerargsarray = spicemanip.main(trigger, 'create')
 
