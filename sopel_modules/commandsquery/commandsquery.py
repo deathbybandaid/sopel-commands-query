@@ -156,6 +156,7 @@ def bot_startup_integrations(bot, trigger):
 
 @module.rule('^\?(.*)')
 def query_detection(bot, trigger):
+    bot.say("here")
 
     commands_list = dict()
     for commandstype in bot.memory['Sopel-CommandsQuery'].keys():
