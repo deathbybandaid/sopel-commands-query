@@ -67,9 +67,6 @@ def setup(bot):
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
                 filepathlist.append(str(path))
 
-    completefilecount = len(filepathlist)
-    bot.memory['Sopel-CommandsQuery'][command_type]
-
     for modulefile in filepathlist:
         module_file_lines = []
         module_file = open(modulefile, 'r')
