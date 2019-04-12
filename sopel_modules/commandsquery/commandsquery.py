@@ -25,15 +25,15 @@ def configure(config):
 
 def setup(bot):
 
-    if 'commandslist' in bot.memory:
+    if 'Sopel-CommandsQuery' in bot.memory:
         return
 
     stderr("[Sopel-CommandsQuery] Evaluating Core Commands List")
 
-    bot.memory['commandslist'] = dict()
+    bot.memory['Sopel-CommandsQuery'] = dict()
     for comtype in ['module', 'nickname', 'rule']:
         comtypedict = str(comtype + "_commands")
-        bot.memory['commandslist'][comtypedict] = dict()
+        bot.memory['Sopel-CommandsQuery'][comtypedict] = dict()
 
     filepathlisting = []
 
@@ -133,31 +133,31 @@ def setup(bot):
             else:
                 comaliases = []
 
-            bot.memory['commandslist'][comtypedict][maincom] = dict_from_file
+            bot.memory['Sopel-CommandsQuery'][comtypedict][maincom] = dict_from_file
             for comalias in comaliases:
-                if comalias not in bot.memory['commandslist'][comtypedict].keys():
-                    bot.memory['commandslist'][comtypedict][comalias] = {"aliasfor": maincom}
+                if comalias not in bot.memory['Sopel-CommandsQuery'][comtypedict].keys():
+                    bot.memory['Sopel-CommandsQuery'][comtypedict][comalias] = {"aliasfor": maincom}
 
-    for commandstype in bot.memory['commandslist'].keys():
-        stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['commandslist'][commandstype].keys())) + " " + commandstype + " commands.")
+    for commandstype in bot.memory['Sopel-CommandsQuery'].keys():
+        stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['Sopel-CommandsQuery'][commandstype].keys())) + " " + commandstype + " commands.")
 
 
 @sopel.module.event('001')
 @sopel.module.rule('.*')
 def bot_startup_integrations(bot, trigger):
 
-    if botevents_installed:
-        set_bot_event(bot, "commandsquery")
+    if botevents_installed and 'Sopel-CommandsQuery' in bot.memory:
+        set_bot_event(bot, "Sopel-CommandsQuery")
 
 
 @module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
     commands_list = dict()
-    for commandstype in bot.memory['commandslist'].keys():
-        for com in bot.memory['commandslist'][commandstype].keys():
+    for commandstype in bot.memory['Sopel-CommandsQuery'].keys():
+        for com in bot.memory['Sopel-CommandsQuery'][commandstype].keys():
             if com not in commands_list.keys():
-                commands_list[com] = bot.memory['commandslist'][commandstype][com]
+                commands_list[com] = bot.memory['Sopel-CommandsQuery'][commandstype][com]
 
     triggerargsarray = spicemanip.main(trigger, 'create')
 
@@ -221,11 +221,11 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
     if not isinstance(validcoms, list):
         validcoms = [validcoms]
 
-    if 'commandslist' not in bot.memory:
-        bot.memory['commandslist'] = dict()
+    if 'Sopel-CommandsQuery' not in bot.memory:
+        bot.memory['Sopel-CommandsQuery'] = dict()
 
-    if command_type not in bot.memory['commandslist'].keys():
-        bot.memory['commandslist'][command_type] = dict()
+    if command_type not in bot.memory['Sopel-CommandsQuery'].keys():
+        bot.memory['Sopel-CommandsQuery'][command_type] = dict()
 
     dict_from_file = dict()
 
@@ -240,10 +240,10 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
             comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
         else:
             comaliases = []
-        bot.memory['commandslist'][command_type][maincom] = dict_from_file
+        bot.memory['Sopel-CommandsQuery'][command_type][maincom] = dict_from_file
     else:
         comaliases = validcoms
 
     for comalias in comaliases:
-        if comalias not in bot.memory['commandslist'][command_type].keys():
-            bot.memory['commandslist'][command_type][comalias] = {"aliasfor": aliasfor}
+        if comalias not in bot.memory['Sopel-CommandsQuery'][command_type].keys():
+            bot.memory['Sopel-CommandsQuery'][command_type][comalias] = {"aliasfor": aliasfor}
