@@ -4,10 +4,17 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel
 from sopel import module
+from sopel.tools import stderr
 
 import os
 from difflib import SequenceMatcher
 from operator import itemgetter
+
+try:
+    from sopel_modules.botevents.botevents import *
+    botevents_installed = True
+except ImportError:
+    botevents_installed = False
 
 import spicemanip
 
@@ -17,6 +24,11 @@ def configure(config):
 
 
 def setup(bot):
+
+    if 'commandslist' in bot.memory:
+        return
+
+    stderr("[Sopel-CommandsQuery] Evaluating Core Commands List")
 
     bot.memory['commandslist'] = dict()
     for comtype in ['module', 'nickname', 'rule']:
@@ -55,16 +67,15 @@ def setup(bot):
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
                 filepathlist.append(str(path))
 
-    for module in filepathlist:
+    for modulefile in filepathlist:
         module_file_lines = []
-        module_file = open(module, 'r')
+        module_file = open(modulefile, 'r')
         lines = module_file.readlines()
         for line in lines:
             module_file_lines.append(line)
         module_file.close()
 
         dict_from_file = dict()
-        dict_from_file_complete = False
         filelinelist = []
 
         for line in module_file_lines:
@@ -126,6 +137,12 @@ def setup(bot):
             for comalias in comaliases:
                 if comalias not in bot.memory['commandslist'][comtypedict].keys():
                     bot.memory['commandslist'][comtypedict][comalias] = {"aliasfor": maincom}
+
+    for commandstype in bot.memory['commandslist'].keys():
+        stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['commandslist'][commandstype].keys())) + " " + commandstype + " commands.")
+
+    if botevents_installed:
+        set_bot_event(bot, "commandsquery")
 
 
 @module.rule('^\?(.*)')
@@ -192,3 +209,36 @@ def query_detection(bot, trigger):
             return bot.notice("No commands match " + str(querycommand) + ".", trigger.nick)
         else:
             return bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
+
+
+def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
+
+    if not isinstance(validcoms, list):
+        validcoms = [validcoms]
+
+    if 'commandslist' not in bot.memory:
+        bot.memory['commandslist'] = dict()
+
+    if command_type not in bot.memory['commandslist'].keys():
+        bot.memory['commandslist'][command_type] = dict()
+
+    dict_from_file = dict()
+
+    # default command to filename
+    if "validcoms" not in dict_from_file.keys():
+        dict_from_file["validcoms"] = validcoms
+
+    if not aliasfor:
+
+        maincom = dict_from_file["validcoms"][0]
+        if len(dict_from_file["validcoms"]) > 1:
+            comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
+        else:
+            comaliases = []
+        bot.memory['commandslist'][command_type][maincom] = dict_from_file
+    else:
+        comaliases = validcoms
+
+    for comalias in comaliases:
+        if comalias not in bot.memory['commandslist'][command_type].keys():
+            bot.memory['commandslist'][command_type][comalias] = {"aliasfor": aliasfor}
