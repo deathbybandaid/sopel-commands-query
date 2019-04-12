@@ -141,6 +141,11 @@ def setup(bot):
     for commandstype in bot.memory['commandslist'].keys():
         stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['commandslist'][commandstype].keys())) + " " + commandstype + " commands.")
 
+
+@sopel.module.event('001')
+@sopel.module.rule('.*')
+def bot_startup_integrations(bot, trigger):
+
     if botevents_installed:
         set_bot_event(bot, "commandsquery")
 
