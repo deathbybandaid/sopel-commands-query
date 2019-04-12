@@ -140,7 +140,7 @@ def setup(bot):
                 if comalias not in bot.memory['Sopel-CommandsQuery'][comtypedict].keys():
                     bot.memory['Sopel-CommandsQuery'][comtypedict][comalias] = {"aliasfor": maincom}
 
-    for commandstype in bot.memory['Sopel-CommandsQuery'].keys():
+    for comtype in ['module_commands', 'nickname_commands', 'rule_commands']:
         stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['Sopel-CommandsQuery'][commandstype].keys())) + " " + commandstype + " commands.")
 
 
