@@ -32,8 +32,8 @@ def setup(bot):
 
     bot.memory['Sopel-CommandsQuery'] = dict()
     for comtype in ['module', 'nickname', 'rule']:
-        comtypedict = str(comtype + "_commands")
-        bot.memory['Sopel-CommandsQuery'][comtypedict] = dict()
+        bot.memory['Sopel-CommandsQuery'][comtype + "_commands"] = dict()
+        bot.memory['Sopel-CommandsQuery'][comtype + "_commands_count"] = 0
 
     filepathlisting = []
 
@@ -66,6 +66,9 @@ def setup(bot):
             path = os.path.join(directory, pathname)
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
                 filepathlist.append(str(path))
+
+    completefilecount = len(filepathlist)
+    bot.memory['Sopel-CommandsQuery'][command_type]
 
     for modulefile in filepathlist:
         module_file_lines = []
@@ -122,6 +125,8 @@ def setup(bot):
             validcoms = atlinefound["validcoms"]
 
             comtypedict = str(comtype + "_commands")
+
+            bot.memory['Sopel-CommandsQuery'][comtype + "_commands_count"] += 1
 
             # default command to filename
             if "validcoms" not in dict_from_file.keys():
@@ -226,6 +231,8 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
 
     if command_type not in bot.memory['Sopel-CommandsQuery'].keys():
         bot.memory['Sopel-CommandsQuery'][command_type] = dict()
+        bot.memory['Sopel-CommandsQuery'][command_type + "_count"] = 0
+    bot.memory['Sopel-CommandsQuery'][command_type + "_count"] += 1
 
     dict_from_file = dict()
 
