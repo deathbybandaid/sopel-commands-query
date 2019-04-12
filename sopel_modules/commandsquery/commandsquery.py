@@ -132,7 +132,7 @@ def setup(bot):
 def query_detection(bot, trigger):
 
     commands_list = dict()
-    for commandstype in ['module_commands', 'nickname_commands']:
+    for commandstype in bot.memory['commandslist'].keys():
         for com in bot.memory['commandslist'][commandstype].keys():
             if com not in commands_list.keys():
                 commands_list[com] = bot.memory['commandslist'][commandstype][com]
