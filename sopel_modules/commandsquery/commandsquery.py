@@ -150,15 +150,15 @@ def setup(bot):
         stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['Sopel-CommandsQuery'][comtype].keys())) + " " + comtype + " commands.")
 
 
-@module.event('001')
-@module.rule('.*')
+@sopel.module.event('001')
+@sopel.module.rule('.*')
 def bot_startup_integrations(bot, trigger):
 
     if botevents_installed and 'Sopel-CommandsQuery' in bot.memory:
         set_bot_event(bot, "Sopel-CommandsQuery")
 
 
-@module.rule('^\.|!(.*)')
+@sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
     # command must start with
