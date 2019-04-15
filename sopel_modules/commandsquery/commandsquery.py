@@ -160,6 +160,9 @@ def setup_thread(bot):
 @sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
+    while "Sopel-BotEvents" not in bot.memory:
+        pass
+
     # command must start with
     if not str(trigger).startswith(tuple(['?'])):
         return
