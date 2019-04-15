@@ -69,6 +69,10 @@ def setup(bot):
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
                 filepathlist.append(str(path))
 
+    # CoreTasks
+    ct_path = os.path.join(main_dir, 'coretasks.py')
+    filepathlist.append(ct_path)
+
     for modulefile in filepathlist:
         module_file_lines = []
         module_file = open(modulefile, 'r')
