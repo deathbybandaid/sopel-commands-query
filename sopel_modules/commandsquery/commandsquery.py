@@ -16,8 +16,6 @@ try:
 except ImportError:
     botevents_installed = False
 
-import sopel_modules.osd
-
 import spicemanip
 
 
@@ -182,22 +180,22 @@ def query_detection(bot, trigger):
             if command.lower().startswith(querycommand):
                 commandlist.append(command)
         if commandlist == []:
-            bot.osd("No commands match " + str(querycommand) + ".", trigger.nick, 'NOTICE')
+            bot.notice("No commands match " + str(querycommand) + ".", trigger.nick)
             return
         else:
-            bot.osd("The following commands match " + str(querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick, 'NOTICE')
+            bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
             return
 
     elif querycommand.endswith(tuple(["+"])):
         querycommand = querycommand[:-1]
         if querycommand not in commands_list.keys():
-            bot.osd("The " + str(querycommand) + " does not appear to be valid.", 'NOTICE')
+            bot.notice("The " + str(querycommand) + " does not appear to be valid.")
             return
         realcom = querycommand
         if "aliasfor" in commands_list[querycommand].keys():
             realcom = commands_list[querycommand]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        bot.osd("The following commands match " + str(querycommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick, 'NOTICE')
+        bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
         return
 
     elif querycommand.endswith(tuple(['?'])):
@@ -214,11 +212,11 @@ def query_detection(bot, trigger):
             if listnumb <= 10:
                 relist.append(str(item))
             listnumb += 1
-        bot.osd("The following commands may match " + str(querycommand) + ": " + spicemanip.main(relist, 'andlist') + ".", trigger.nick, 'NOTICE')
+        bot.notice("The following commands may match " + str(querycommand) + ": " + spicemanip.main(relist, 'andlist') + ".", trigger.nick)
         return
 
     elif querycommand in commands_list.keys():
-        bot.osd("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".", trigger.nick, 'NOTICE')
+        bot.notice("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".", trigger.nick)
         return
 
     elif not querycommand:
@@ -230,10 +228,10 @@ def query_detection(bot, trigger):
             if command.lower().startswith(querycommand):
                 commandlist.append(command)
         if commandlist == []:
-            bot.osd("No commands match " + str(querycommand) + ".", trigger.nick, 'NOTICE')
+            bot.notice("No commands match " + str(querycommand) + ".", trigger.nick)
             return
         else:
-            bot.osd("The following commands match " + str(querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick, 'NOTICE')
+            bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
             return
 
 
