@@ -31,9 +31,6 @@ def setup(bot):
 
 def setup_thread(bot):
 
-    if 'Sopel-CommandsQuery' in bot.memory:
-        return
-
     stderr("[Sopel-CommandsQuery] Evaluating Core Commands List")
 
     bot.memory['Sopel-CommandsQuery'] = dict()
