@@ -155,7 +155,8 @@ def setup_thread(bot):
 
     if botevents_installed:
         while 'Sopel-BotEvents' not in bot.memory:
-            set_bot_event(bot, "Sopel-CommandsQuery")
+            pass
+        set_bot_event(bot, "Sopel-CommandsQuery")
 
 
 @sopel.module.rule('^\?(.*)')
