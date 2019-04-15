@@ -25,13 +25,12 @@ def configure(config):
 
 
 def setup(bot):
+    stderr("[Sopel-CommandsQuery] Evaluating Core Commands List")
 
     threading.Thread(target=setup_thread, args=(bot,)).start()
 
 
 def setup_thread(bot):
-
-    stderr("[Sopel-CommandsQuery] Evaluating Core Commands List")
 
     bot.memory['Sopel-CommandsQuery'] = dict()
     for comtype in ['module', 'nickname', 'rule']:
