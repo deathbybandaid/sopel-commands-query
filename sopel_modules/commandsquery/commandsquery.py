@@ -9,6 +9,7 @@ from sopel.tools import stderr
 import os
 from difflib import SequenceMatcher
 from operator import itemgetter
+import threading
 
 try:
     from sopel_modules.botevents.botevents import *
@@ -24,6 +25,11 @@ def configure(config):
 
 
 def setup(bot):
+
+    threading.Thread(target=setup_thread, args=(bot,)).start()
+
+
+def setup_thread(bot):
 
     if 'Sopel-CommandsQuery' in bot.memory:
         return
@@ -146,11 +152,6 @@ def setup(bot):
 
     for comtype in ['module_commands', 'nickname_commands', 'rule_commands']:
         stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['Sopel-CommandsQuery'][comtype].keys())) + " " + comtype + " commands.")
-
-
-@sopel.module.event('001')
-@sopel.module.rule('.*')
-def bot_startup_integrations(bot, trigger):
 
     if botevents_installed and 'Sopel-CommandsQuery' in bot.memory:
         set_bot_event(bot, "Sopel-CommandsQuery")
