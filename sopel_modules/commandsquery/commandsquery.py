@@ -150,15 +150,15 @@ def setup(bot):
         stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['Sopel-CommandsQuery'][comtype].keys())) + " " + comtype + " commands.")
 
 
-@sopel.module.event('001')
-@sopel.module.rule('.*')
+@module.event('001')
+@module.rule('.*')
 def bot_startup_integrations(bot, trigger):
 
     if botevents_installed and 'Sopel-CommandsQuery' in bot.memory:
         set_bot_event(bot, "Sopel-CommandsQuery")
 
 
-@sopel.module.rule('^\?(.*)')
+@module.rule('^\.|!(.*)')
 def query_detection(bot, trigger):
 
     # command must start with
@@ -214,7 +214,8 @@ def query_detection(bot, trigger):
             if listnumb <= 10:
                 relist.append(str(item))
             listnumb += 1
-        return bot.osd("The following commands may match " + str(querycommand) + ": " + spicemanip.main(relist, 'andlist') + ".", trigger.nick, 'NOTICE')
+        bot.osd("The following commands may match " + str(querycommand) + ": " + spicemanip.main(relist, 'andlist') + ".", trigger.nick, 'NOTICE')
+        return
 
     elif querycommand in commands_list.keys():
         bot.osd("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".", trigger.nick, 'NOTICE')
