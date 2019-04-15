@@ -151,8 +151,6 @@ def setup_thread(bot):
         stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['Sopel-CommandsQuery'][comtype].keys())) + " " + comtype + " commands.")
 
     if botevents_installed:
-        while 'Sopel-BotEvents' not in bot.memory:
-            pass
         set_bot_event(bot, "Sopel-CommandsQuery")
 
 
