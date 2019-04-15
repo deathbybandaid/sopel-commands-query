@@ -153,8 +153,9 @@ def setup_thread(bot):
     for comtype in ['module_commands', 'nickname_commands', 'rule_commands']:
         stderr("[Sopel-CommandsQuery] Found " + str(len(bot.memory['Sopel-CommandsQuery'][comtype].keys())) + " " + comtype + " commands.")
 
-    if botevents_installed and 'Sopel-CommandsQuery' in bot.memory:
-        set_bot_event(bot, "Sopel-CommandsQuery")
+    if botevents_installed:
+        while 'Sopel-BotEvents' not in bot.memory:
+            set_bot_event(bot, "Sopel-CommandsQuery")
 
 
 @sopel.module.rule('^\?(.*)')
