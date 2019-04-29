@@ -162,6 +162,7 @@ def query_detection(bot, trigger):
     # command must start with
     if not str(trigger).startswith(tuple(['?'])):
         return
+    stderr(trigger.args)
 
     commands_list = dict()
     for commandstype in bot.memory['Sopel-CommandsQuery'].keys():
