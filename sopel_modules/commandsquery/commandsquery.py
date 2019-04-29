@@ -235,7 +235,6 @@ def query_detection(bot, trigger):
             return
 
 
-
 def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
 
     if not isinstance(validcoms, list):
